@@ -3,14 +3,22 @@
   "version": "0.0.1",
   "description": "CLTodo (Command Line Todo)",
   "type": "module",
-  "main": "main.js",
+  "bin": {
+    "cltodo": "./bin/cltodo.js"
+  },
   "scripts": {
-    "dev": "node --inspect --watch main.js"
+    "dev": "npm run dev:tsc & npm run dev:node",
+    "dev:tsc": "tsc --watch",
+    "dev:node": "nodemon --inspect bin/cltodo.js"
   },
   "repository": {
     "type": "git",
     "url": "https://github.com/dominikdepta/cltodo.git"
   },
   "author": "Dominik Depta <dominikdepta@gmail.com>",
-  "license": "ISC"
+  "license": "ISC",
+  "devDependencies": {
+    "nodemon": "^3.1.9",
+    "typescript": "^5.8.3"
+  }
 }
