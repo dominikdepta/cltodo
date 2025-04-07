@@ -1,0 +1,16 @@
+{
+  "name": "cltodo",
+  "version": "0.0.1",
+  "description": "CLTodo (Command Line Todo)",
+  "type": "module",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/dominikdepta/cltodo.git"
+  },
+  "author": "Dominik Depta <dominikdepta@gmail.com>",
+  "license": "ISC"
+}
