@@ -7,8 +7,9 @@
     "cltodo": "./bin/cltodo.js"
   },
   "scripts": {
-    "dev": "tsc --noEmit --watch & tsx watch src/cltodo.ts",
-    "build": "rimraf bin && tsc"
+    "dev": "tsc --watch & node --watch ./bin/cltodo.js",
+    "build": "tsc",
+    "clean": "rimraf bin"
   },
   "repository": {
     "type": "git",
