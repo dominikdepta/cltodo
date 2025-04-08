@@ -7,9 +7,8 @@
     "cltodo": "./bin/cltodo.js"
   },
   "scripts": {
-    "dev": "npm run dev:tsc & npm run dev:node",
-    "dev:tsc": "tsc --watch",
-    "dev:node": "nodemon --inspect bin/cltodo.js"
+    "dev": "tsc --noEmit --watch & tsx watch src/cltodo.ts",
+    "build": "rimraf bin && tsc"
   },
   "repository": {
     "type": "git",
@@ -18,7 +17,10 @@
   "author": "Dominik Depta <dominikdepta@gmail.com>",
   "license": "ISC",
   "devDependencies": {
+    "@types/node": "^22.14.0",
     "nodemon": "^3.1.9",
+    "rimraf": "^6.0.1",
+    "tsx": "^4.19.3",
     "typescript": "^5.8.3"
   }
 }
