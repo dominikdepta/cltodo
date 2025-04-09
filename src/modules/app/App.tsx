@@ -1,8 +1,9 @@
-import { Box, useInput } from "ink";
+import { Box, Text, useInput } from "ink";
 import React, { useState } from "react";
 import { _tempTodos } from "../../modules/todo/constants.ts";
 import { TodoList } from "../../modules/todo/TodoList/TodoList.tsx";
 import { Todo } from "../../modules/todo/types.js";
+import { Header } from "../../components/Header/Header.tsx";
 
 export const App = () => {
   const [todos, setTodos] = useState(_tempTodos);
@@ -20,6 +21,10 @@ export const App = () => {
 
   return (
     <Box flexDirection="column">
+      <Header title="CLTodo">
+        <Text>{"<slot />"}</Text>
+      </Header>
+
       <TodoList
         items={todos}
         activeIndex={activeIndex}
