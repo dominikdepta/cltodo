@@ -8,11 +8,8 @@ import { TodoItem } from "../todo/TodoItem/TodoItem.tsx";
 export const App = () => {
   const [todos, setTodos] = useState(_tempTodos);
   const [activeIndex, setActiveIndex] = useState(0);
+  const [isEditing, setIsEditing] = useState(false);
   const selectedTodo = todos[activeIndex];
-
-  const handleItemSelect = (index: number) => {
-    setActiveIndex(index);
-  };
 
   const toggleTodo = (id: string) => {
     setTodos((prevTodos) =>
@@ -22,9 +19,30 @@ export const App = () => {
     );
   };
 
+  const handleItemSelect = (index: number) => {
+    setActiveIndex(index);
+  };
+
+  const handleItemEdit = (id: string) => (newTitle: string) => {
+    setTodos((prevTodos) =>
+      prevTodos.map((todo) =>
+        todo.id === id ? { ...todo, title: newTitle } : todo
+      )
+    );
+    setIsEditing(false);
+  };
+
   useInput((input, key) => {
     if ((key.ctrl && input === "c") || input === "q") {
       process.exit();
+    }
+
+    if (input === "e") {
+      setIsEditing(!isEditing);
+    }
+
+    if (isEditing) {
+      return;
     }
 
     if (input === " ") {
@@ -46,6 +64,8 @@ export const App = () => {
             title={title}
             completed={completed}
             active={index === activeIndex}
+            isEditing={isEditing && index === activeIndex}
+            onEdit={handleItemEdit(id)}
           />
         ))}
       </TodoList>

@@ -3,4 +3,6 @@ export interface TodoItemProps {
   completed: boolean;
   title: string;
   active?: boolean;
+  isEditing?: boolean;
+  onEdit?: (id: string) => void;
 }
