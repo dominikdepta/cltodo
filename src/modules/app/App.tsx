@@ -8,14 +8,27 @@ import { TodoItem } from "../todo/TodoItem/TodoItem.tsx";
 export const App = () => {
   const [todos, setTodos] = useState(_tempTodos);
   const [activeIndex, setActiveIndex] = useState(0);
+  const selectedTodo = todos[activeIndex];
 
   const handleItemSelect = (index: number) => {
     setActiveIndex(index);
   };
 
+  const toggleTodo = (id: string) => {
+    setTodos((prevTodos) =>
+      prevTodos.map((todo) =>
+        todo.id === id ? { ...todo, completed: !todo.completed } : todo
+      )
+    );
+  };
+
   useInput((input, key) => {
     if ((key.ctrl && input === "c") || input === "q") {
       process.exit();
+    }
+
+    if (input === " ") {
+      toggleTodo(selectedTodo.id);
     }
   });
 
