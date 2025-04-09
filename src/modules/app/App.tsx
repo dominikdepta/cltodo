@@ -1,16 +1,16 @@
 import { Box, Text, useInput } from "ink";
 import React, { useState } from "react";
+import { Header } from "../../components/Header/Header.tsx";
 import { _tempTodos } from "../../modules/todo/constants.ts";
 import { TodoList } from "../../modules/todo/TodoList/TodoList.tsx";
-import { Todo } from "../../modules/todo/types.js";
-import { Header } from "../../components/Header/Header.tsx";
+import { TodoItem } from "../todo/TodoItem/TodoItem.tsx";
 
 export const App = () => {
   const [todos, setTodos] = useState(_tempTodos);
   const [activeIndex, setActiveIndex] = useState(0);
 
-  const handleItemSelect = (item: Todo) => {
-    setActiveIndex(todos.findIndex((todo) => todo.id === item.id));
+  const handleItemSelect = (index: number) => {
+    setActiveIndex(index);
   };
 
   useInput((input, key) => {
@@ -25,11 +25,17 @@ export const App = () => {
         <Text>{"<slot />"}</Text>
       </Header>
 
-      <TodoList
-        items={todos}
-        activeIndex={activeIndex}
-        onSelect={handleItemSelect}
-      />
+      <TodoList activeIndex={activeIndex} onSelect={handleItemSelect}>
+        {todos.map(({ id, title, completed }, index) => (
+          <TodoItem
+            key={id}
+            id={id}
+            title={title}
+            completed={completed}
+            active={index === activeIndex}
+          />
+        ))}
+      </TodoList>
     </Box>
   );
 };
