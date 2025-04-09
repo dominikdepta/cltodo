@@ -7,7 +7,7 @@
     "cltodo": "./bin/cltodo.js"
   },
   "scripts": {
-    "dev": "tsc --watch & node --watch ./bin/cltodo.js",
+    "dev": "concurrently --raw \"tsc --watch\" \"node --watch ./bin/cltodo.js\"",
     "start": "node ./bin/cltodo.js",
     "build": "tsc",
     "clean": "rimraf bin"
@@ -25,6 +25,7 @@
   "devDependencies": {
     "@types/node": "^22.14.0",
     "@types/react": "^19.1.0",
+    "concurrently": "^9.1.2",
     "nodemon": "^3.1.9",
     "rimraf": "^6.0.1",
     "tsx": "^4.19.3",
