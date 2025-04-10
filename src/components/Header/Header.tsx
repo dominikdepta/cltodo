@@ -6,10 +6,14 @@ export const Header = ({ title, children }: HeaderProps) => {
   return (
     <Box flexDirection="column">
       <Text color="black" backgroundColor="green" bold>
-        {'▒▒▒▒▒▒  '}{title}{'  ▒▒▒▒▒▒'}
+        {"▒▒▒▒▒▒  "}
+        {title}
+        {"  ▒▒▒▒▒▒"}
       </Text>
 
-      {children}
+      <Box height={1}>
+        {children}
+      </Box>
     </Box>
   );
 };
