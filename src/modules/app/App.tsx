@@ -1,13 +1,14 @@
-import { Box, Text, useInput } from "ink";
+import { Box, useApp, useInput } from "ink";
 import React, { useMemo, useState } from "react";
 import { Header } from "../../components/Header/Header.tsx";
+import { Search } from "../../components/Search/Search.tsx";
 import { _tempTodos } from "../../modules/todo/constants.ts";
 import { TodoList } from "../../modules/todo/TodoList/TodoList.tsx";
 import { TodoItem } from "../todo/TodoItem/TodoItem.tsx";
-import { Search } from "../../components/Search/Search.tsx";
 import { Todo } from "../todo/types.ts";
 
 export const App = () => {
+  const { exit } = useApp();
   const [todos, setTodos] = useState(_tempTodos);
   const [activeItem, setActiveItem] = useState<Todo>(todos[0]);
   const [isEditing, setIsEditing] = useState(false);
@@ -57,7 +58,8 @@ export const App = () => {
     }
 
     if ((key.ctrl && input === "c") || input === "q") {
-      process.exit();
+      exit();
+      process.exit(0);
     }
 
     if (input === "s") {
