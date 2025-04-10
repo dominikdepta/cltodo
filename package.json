@@ -7,7 +7,7 @@
     "cltodo": "./bin/cltodo.js"
   },
   "scripts": {
-    "dev": "concurrently --raw \"tsc --watch\" \"node --watch ./bin/cltodo.js\"",
+    "dev": "concurrently --raw --killOthers --pauseInputStreamOnFinish \"tsc --watch\" \"node --watch ./bin/cltodo.js\"",
     "start": "node ./bin/cltodo.js",
     "build": "tsc",
     "clean": "rimraf bin"
