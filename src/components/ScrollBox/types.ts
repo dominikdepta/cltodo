@@ -1,8 +1,8 @@
 import type React from "react";
 
 export interface ScrollBoxProps {
-  activeIndex: number;
   children: React.ReactNode;
+  initialIndex?: number;
   keyNavigation?: boolean;
   maxItems?: number;
   onChange?: (index: number) => void;
