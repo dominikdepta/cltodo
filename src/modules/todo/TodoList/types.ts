@@ -1,9 +1,9 @@
 import type { Todo } from "../types.ts";
 
 export interface TodoListProps {
-  activeIndex: number;
   children: React.ReactNode;
-  maxItems?: number;
+  initialIndex?: number;
   keyNavigation?: boolean;
+  maxItems?: number;
   onSelect: (index: number) => void;
 }
