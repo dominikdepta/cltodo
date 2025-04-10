@@ -21,7 +21,10 @@ export const App = () => {
       ),
     [todos, searchValue]
   );
-
+  const doneTodos = useMemo(
+    () => todos.filter((todo) => todo.completed),
+    [todos]
+  );
   const toggleTodo = (id: string) => {
     setTodos((prevTodos) =>
       prevTodos.map((todo) =>
@@ -77,7 +80,7 @@ export const App = () => {
 
   return (
     <Box flexDirection="column">
-      <Header title="CLTodo">
+      <Header title={`CLTodo (${doneTodos.length}/${todos.length})`}>
         {(isSearching || searchValue.length > 0) && (
           <Search
             value={searchValue}
