@@ -1,5 +1,5 @@
 import { Box, useInput } from "ink";
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo, useReducer } from "react";
 import { Footer } from "../../../components/Footer/Footer.tsx";
 import { Header } from "../../../components/Header/Header.tsx";
 import { Key } from "../../../components/Key/Key.tsx";
@@ -8,76 +8,69 @@ import { useAppContext } from "../../../contexts/app/AppContext.tsx";
 import { _tempTodos } from "../../todo/constants.ts";
 import { TodoItem } from "../../todo/TodoItem/TodoItem.tsx";
 import { TodoList } from "../../todo/TodoList/TodoList.tsx";
-import { Todo } from "../../todo/types.ts";
+import { todoInitialState } from "./todoReducer/constants.ts";
+import { todoReducer } from "./todoReducer/todoReducer.ts";
 
 export const TodoContainer = () => {
   const { setGlobalKeysEnabled } = useAppContext();
-  const [todos, setTodos] = useState(_tempTodos);
-  const [activeItem, setActiveItem] = useState<Todo>(todos[0]);
-  const [isEditing, setIsEditing] = useState(false);
-  const [isSearching, setIsSearching] = useState(false);
-  const [searchValue, setSearchValue] = useState("");
-  const filteredTodos = useMemo(
+  const [state, dispatch] = useReducer(todoReducer, {
+    ...todoInitialState,
+    items: _tempTodos,
+    activeItem: _tempTodos[0],
+  });
+  const { items, activeItem, searchValue, mode } = state;
+  const filteredItems = useMemo(
     () =>
-      todos.filter((todo) =>
+      items.filter((todo) =>
         todo.title.toLowerCase().includes(searchValue.toLowerCase())
       ),
-    [todos, searchValue]
+    [items, searchValue]
   );
-  const doneTodos = useMemo(
-    () => todos.filter((todo) => todo.completed),
-    [todos]
+  const doneItems = useMemo(
+    () => items.filter((todo) => todo.completed),
+    [items]
   );
-  const activeIndex = filteredTodos.findIndex((todo) => todo.id === activeItem.id);
+  const activeIndex = filteredItems.findIndex(
+    (todo) => todo.id === activeItem.id
+  );
 
   const toggleTodo = (id: string) => {
-    setTodos((prevTodos) =>
-      prevTodos.map((todo) =>
-        todo.id === id ? { ...todo, completed: !todo.completed } : todo
-      )
-    );
+    dispatch({ type: "ITEM_TOGGLE", payload: { id } });
   };
 
   const handleItemSelect = (index: number) => {
-    setActiveItem(filteredTodos[index]);
+    dispatch({ type: "ITEM_SELECT", payload: { id: filteredItems[index].id } });
   };
 
   const handleItemEdit = (id: string) => (newTitle: string) => {
-    setTodos((prevTodos) =>
-      prevTodos.map((todo) =>
-        todo.id === id ? { ...todo, title: newTitle } : todo
-      )
-    );
-    setIsEditing(false);
+    dispatch({ type: "ITEM_EDIT", payload: { id, newTitle } });
   };
 
   const handleSearchChange = (value: string) => {
-    setSearchValue(value);
+    dispatch({ type: "SEARCH_CHANGE", payload: { value } });
   };
 
   const handleSearchSubmit = () => {
-    setIsSearching(!isSearching);
+    dispatch({ type: "SEARCH_SUBMIT" });
 
-    if (!filteredTodos[0]) {
-      setSearchValue("");
-      setActiveItem(todos[0]);
-      return;
+    if (!filteredItems[0]) {
+      dispatch({ type: "SEARCH_CLEAR" });
+    } else {
+      dispatch({ type: "ITEM_SELECT", payload: { id: filteredItems[0].id } });
     }
-
-    setActiveItem(filteredTodos[0]);
   };
 
   useInput((input) => {
-    if (isSearching || isEditing) {
+    if (mode !== "list") {
       return;
     }
 
     if (input === "s") {
-      setIsSearching(true);
+      dispatch({ type: "MODE_SELECT", payload: { mode: "search" } });
     }
 
     if (input === "e") {
-      setIsEditing(!isEditing);
+      dispatch({ type: "MODE_SELECT", payload: { mode: "edit" } });
     }
 
     if (input === " ") {
@@ -86,16 +79,16 @@ export const TodoContainer = () => {
   });
 
   useEffect(() => {
-    setGlobalKeysEnabled(!isSearching && !isEditing);
-  }, [isSearching, isEditing, setGlobalKeysEnabled]);
+    setGlobalKeysEnabled(mode === "list");
+  }, [mode, setGlobalKeysEnabled]);
 
   return (
     <Box flexDirection="column">
-      <Header title={`CLTodo (${doneTodos.length}/${todos.length})`}>
-        {(isSearching || searchValue.length > 0) && (
+      <Header title={`CLTodo (${doneItems.length}/${items.length})`}>
+        {(mode === "search" || searchValue.length > 0) && (
           <Search
             value={searchValue}
-            isFocused={isSearching}
+            isFocused={mode === "search"}
             onChange={handleSearchChange}
             onSubmit={handleSearchSubmit}
           />
@@ -104,17 +97,17 @@ export const TodoContainer = () => {
 
       <TodoList
         activeIndex={activeIndex}
-        keyNavigation={!isEditing && !isSearching}
+        keyNavigation={mode === "list"}
         onSelect={handleItemSelect}
       >
-        {filteredTodos.map(({ id, title, completed }, index) => (
+        {filteredItems.map(({ id, title, completed }, index) => (
           <TodoItem
             key={id}
             id={id}
             title={title}
             completed={completed}
             active={id === activeItem.id}
-            isEditing={isEditing && id === activeItem.id}
+            isEditing={mode === "edit" && id === activeItem.id}
             onEdit={handleItemEdit(id)}
           />
         ))}
