@@ -3,11 +3,12 @@ import React, { useState } from "react";
 import { useAppContext } from "../../contexts/app/AppContext.tsx";
 import { HelpView } from "./HelpView.tsx";
 import { ListView } from "./ListView.tsx";
+import { AppView } from "./types.ts";
 
 export const ViewToggle = () => {
   const { exit } = useApp();
   const { areGlobalKeysEnabled } = useAppContext();
-  const [view, setView] = useState("list");
+  const [view, setView] = useState<AppView>("list");
 
   useInput((input) => {
     if (!areGlobalKeysEnabled) {
