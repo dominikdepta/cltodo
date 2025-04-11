@@ -17,7 +17,6 @@ export const TodoContainer = () => {
   const [isEditing, setIsEditing] = useState(false);
   const [isSearching, setIsSearching] = useState(false);
   const [searchValue, setSearchValue] = useState("");
-  const activeIndex = todos.findIndex((todo) => todo.id === activeItem.id);
   const filteredTodos = useMemo(
     () =>
       todos.filter((todo) =>
@@ -29,6 +28,8 @@ export const TodoContainer = () => {
     () => todos.filter((todo) => todo.completed),
     [todos]
   );
+  const activeIndex = filteredTodos.findIndex((todo) => todo.id === activeItem.id);
+
   const toggleTodo = (id: string) => {
     setTodos((prevTodos) =>
       prevTodos.map((todo) =>
@@ -59,6 +60,7 @@ export const TodoContainer = () => {
 
     if (!filteredTodos[0]) {
       setSearchValue("");
+      setActiveItem(todos[0]);
       return;
     }
 
