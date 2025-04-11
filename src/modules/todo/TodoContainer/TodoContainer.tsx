@@ -2,8 +2,8 @@ import { Box, useInput } from "ink";
 import React, { useEffect, useMemo, useReducer } from "react";
 import { Footer } from "../../../components/Footer/Footer.tsx";
 import { Header } from "../../../components/Header/Header.tsx";
+import { Input } from "../../../components/Input/Input.tsx";
 import { Key } from "../../../components/Key/Key.tsx";
-import { Search } from "../../../components/Search/Search.tsx";
 import { useAppContext } from "../../../contexts/app/AppContext.tsx";
 import { _tempTodos } from "../../todo/constants.ts";
 import { TodoItem } from "../../todo/TodoItem/TodoItem.tsx";
@@ -86,9 +86,10 @@ export const TodoContainer = () => {
     <Box flexDirection="column">
       <Header title={`CLTodo (${doneItems.length}/${items.length})`}>
         {(mode === "search" || searchValue.length > 0) && (
-          <Search
+          <Input
+            icon="🔎"
             value={searchValue}
-            isFocused={mode === "search"}
+            focus={mode === "search"}
             onChange={handleSearchChange}
             onSubmit={handleSearchSubmit}
           />
