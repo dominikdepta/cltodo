@@ -1,6 +1,6 @@
 import { useApp, useInput } from "ink";
 import React, { useState } from "react";
-import { useAppContext } from "../../contexts/app/AppContext.tsx";
+import { useAppContext } from "../../../contexts/app/AppContext.tsx";
 import { HelpView } from "./HelpView.tsx";
 import { ListView } from "./ListView.tsx";
 import { AppView } from "./types.ts";
