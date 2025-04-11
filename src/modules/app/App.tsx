@@ -1,6 +1,8 @@
 import { Box, useApp, useInput } from "ink";
 import React, { useMemo, useState } from "react";
+import { Footer } from "../../components/Footer/Footer.tsx";
 import { Header } from "../../components/Header/Header.tsx";
+import { Key } from "../../components/Key/Key.tsx";
 import { Search } from "../../components/Search/Search.tsx";
 import { _tempTodos } from "../../modules/todo/constants.ts";
 import { TodoList } from "../../modules/todo/TodoList/TodoList.tsx";
@@ -107,6 +109,10 @@ export const App = () => {
           />
         ))}
       </TodoList>
+
+      <Footer>
+        <Key value="h" label="[todo]" variant="secondary" />
+      </Footer>
     </Box>
   );
 };
