@@ -23,7 +23,7 @@ export const ScrollBox = ({
   const isOverflowTop =
     items.length > visibleCount && activeIndex > Math.floor(visibleCount / 2);
   const isOverflowBottom =
-    items.length > visibleCount && endIndex < items.length - 1;
+    items.length > visibleCount && endIndex < items.length;
 
   useInput((input, key) => {
     if (!keyNavigation) {
