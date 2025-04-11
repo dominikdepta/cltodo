@@ -27,4 +27,8 @@ export class TodoService {
     const todo = await this.#todoStorage.getItem(id);
     return await this.#todoStorage.putItem(id, { ...todo, ...updates });
   }
+
+  async delete(id: string) {
+    await this.#todoStorage.removeItem(id);
+  }
 }

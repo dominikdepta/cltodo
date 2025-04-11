@@ -34,6 +34,18 @@ export const todoReducer = (
         mode: "list",
       };
     }
+    case "ITEM_DELETE": {
+      const { id } = action.payload;
+      const index = state.items.findIndex((todo) => todo.id === id);
+      const items = state.items.filter((todo) => todo.id !== id);
+      const activeItem = items[index - 1] || items[0];
+      return {
+        ...state,
+        items,
+        activeItem,
+        mode: "list",
+      };
+    }
     case "ITEM_ADD_CANCEL": {
       return {
         ...state,

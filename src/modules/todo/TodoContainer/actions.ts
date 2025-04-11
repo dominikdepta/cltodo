@@ -1,6 +1,6 @@
+import { MemoryStorage } from "../service/storage/memory.ts";
 import { TodoService } from "../service/TodoService.ts";
 import { Todo } from "../service/types.ts";
-import { MemoryStorage } from "../service/storage/memory.ts";
 import { TodoAsyncAction } from "./todoReducer/types.ts";
 
 const todoService = new TodoService(new MemoryStorage());
@@ -36,5 +36,16 @@ export const updateTodo =
       dispatch({ type: "ITEM_UPDATE", payload: { item } });
     } catch (error) {
       console.error("Error updating todo:", error);
+    }
+  };
+
+export const deleteTodo =
+  (id: string): TodoAsyncAction =>
+  async ({ dispatch }) => {
+    try {
+      await todoService.delete(id);
+      dispatch({ type: "ITEM_DELETE", payload: { id } });
+    } catch (error) {
+      console.error("Error deleting todo:", error);
     }
   };

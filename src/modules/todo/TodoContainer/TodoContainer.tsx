@@ -78,6 +78,14 @@ export const TodoContainer = () => {
       return;
     }
 
+    if (!hasSearchValue && input === "a") {
+      dispatch({ type: "MODE_SELECT", payload: { mode: "add" } });
+    }
+
+    if (!activeItem?.id) {
+      return;
+    }
+
     if (input === "s") {
       dispatch({ type: "MODE_SELECT", payload: { mode: "search" } });
     }
@@ -86,8 +94,8 @@ export const TodoContainer = () => {
       dispatch({ type: "MODE_SELECT", payload: { mode: "edit" } });
     }
 
-    if (!hasSearchValue && input === "a") {
-      dispatch({ type: "MODE_SELECT", payload: { mode: "add" } });
+    if (input === "d") {
+      dispatch(actions.deleteTodo(activeItem.id));
     }
 
     if (input === " ") {

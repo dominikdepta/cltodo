@@ -39,6 +39,12 @@ export type TodoAction =
       };
     }
   | {
+      type: "ITEM_DELETE";
+      payload: {
+        id: string;
+      };
+    }
+  | {
       type: "ITEMS_SET";
       payload: {
         items: Todo[];
