@@ -21,9 +21,10 @@ export const HelpContainer = () => {
 
         <Box flexDirection="column">
           <HelpTitle>Todo list</HelpTitle>
-          <HelpKey value="s" label="search" />
+          <HelpKey value="a" label="add" />
           <HelpKey value="e" label="edit" />
           <HelpKey value="space" label="toggle" />
+          <HelpKey value="s" label="search" />
           <HelpKey value="↑ k" label="up" />
           <HelpKey value="↓ j" label="down" />
         </Box>
