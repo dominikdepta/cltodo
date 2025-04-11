@@ -17,6 +17,7 @@ export const TodoContainer = () => {
   const [isEditing, setIsEditing] = useState(false);
   const [isSearching, setIsSearching] = useState(false);
   const [searchValue, setSearchValue] = useState("");
+  const activeIndex = todos.findIndex((todo) => todo.id === activeItem.id);
   const filteredTodos = useMemo(
     () =>
       todos.filter((todo) =>
@@ -94,6 +95,7 @@ export const TodoContainer = () => {
       </Header>
 
       <TodoList
+        activeIndex={activeIndex}
         keyNavigation={!isEditing && !isSearching}
         onSelect={handleItemSelect}
       >

@@ -4,12 +4,11 @@ import type { ScrollBoxProps } from "./types.ts";
 
 export const ScrollBox = ({
   children,
-  initialIndex = 0,
+  activeIndex,
   keyNavigation = true,
   maxItems = 5,
   onChange = () => {},
 }: ScrollBoxProps) => {
-  const [activeIndex, setActiveIndex] = React.useState(initialIndex);
   const items = React.Children.toArray(children);
   const visibleCount = Math.min(maxItems, items.length);
   const startIndex = Math.max(
@@ -33,12 +32,10 @@ export const ScrollBox = ({
 
     if (input === "j" || key.downArrow) {
       const newIndex = (activeIndex + 1) % items.length;
-      setActiveIndex(newIndex);
       onChange(newIndex);
     }
     if (input === "k" || key.upArrow) {
       const newIndex = (activeIndex - 1 + items.length) % items.length;
-      setActiveIndex(newIndex);
       onChange(newIndex);
     }
   });

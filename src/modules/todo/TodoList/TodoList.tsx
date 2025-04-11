@@ -4,13 +4,13 @@ import type { TodoListProps } from "./types.tsx";
 
 export const TodoList = ({
   children,
-  initialIndex,
+  activeIndex,
   keyNavigation,
   onSelect,
 }: TodoListProps) => {
   return (
     <ScrollBox
-      initialIndex={initialIndex}
+      activeIndex={activeIndex}
       keyNavigation={keyNavigation}
       maxItems={5}
       onChange={onSelect}
