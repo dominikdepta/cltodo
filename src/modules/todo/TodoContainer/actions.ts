@@ -1,9 +1,11 @@
+import { LowDBStorage } from "../service/storage/lowdb.ts";
 import { MemoryStorage } from "../service/storage/memory.ts";
 import { TodoService } from "../service/TodoService.ts";
 import { Todo } from "../service/types.ts";
 import { TodoAsyncAction } from "./todoReducer/types.ts";
 
-const todoService = new TodoService(new MemoryStorage());
+// const todoService = new TodoService(new MemoryStorage());
+const todoService = new TodoService(new LowDBStorage());
 
 export const getTodos =
   (): TodoAsyncAction =>
