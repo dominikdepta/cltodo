@@ -1,25 +1,11 @@
-import { useApp, useInput } from "ink";
-import React, { useState } from "react";
-import { HelpView } from "./HelpView.tsx";
-import { ListView } from "./ListView.tsx";
+import React from "react";
+import { AppProvider } from "../../contexts/app/AppContext.tsx";
+import { ViewToggle } from "./ViewToggle.tsx";
 
 export const App = () => {
-  const { exit } = useApp();
-  const [view, setView] = useState("list");
-
-  useInput((input, key) => {
-    if (input === "q") {
-      exit();
-    } else if (input === "h") {
-      setView("help");
-    } else if (input === "l") {
-      setView("list");
-    }
-  });
-
-  if (view === "help") {
-    return <HelpView />;
-  }
-
-  return <ListView />;
+  return (
+    <AppProvider>
+      <ViewToggle />
+    </AppProvider>
+  );
 };

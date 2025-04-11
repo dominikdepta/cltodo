@@ -1,15 +1,17 @@
 import { Box, useInput } from "ink";
-import React, { useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { Footer } from "../../components/Footer/Footer.tsx";
 import { Header } from "../../components/Header/Header.tsx";
 import { Key } from "../../components/Key/Key.tsx";
 import { Search } from "../../components/Search/Search.tsx";
+import { useAppContext } from "../../contexts/app/AppContext.tsx";
 import { _tempTodos } from "../todo/constants.ts";
 import { TodoItem } from "../todo/TodoItem/TodoItem.tsx";
 import { TodoList } from "../todo/TodoList/TodoList.tsx";
 import { Todo } from "../todo/types.ts";
 
 export const ListView = () => {
+  const { setGlobalKeysEnabled } = useAppContext();
   const [todos, setTodos] = useState(_tempTodos);
   const [activeItem, setActiveItem] = useState<Todo>(todos[0]);
   const [isEditing, setIsEditing] = useState(false);
@@ -73,6 +75,10 @@ export const ListView = () => {
       toggleTodo(activeItem.id);
     }
   });
+
+  useEffect(() => {
+    setGlobalKeysEnabled(!isSearching && !isEditing);
+  }, [isSearching, isEditing, setGlobalKeysEnabled]);
 
   return (
     <Box flexDirection="column">
