@@ -1,25 +1,21 @@
 import { Box, useInput } from "ink";
-import React, { useEffect, useMemo, useReducer } from "react";
+import React, { useEffect, useMemo } from "react";
 import { Footer } from "../../../components/Footer/Footer.tsx";
 import { Header } from "../../../components/Header/Header.tsx";
 import { Input } from "../../../components/Input/Input/Input.tsx";
 import { UncontrolledInput } from "../../../components/Input/UncontrolledInput/UncontrolledInput.tsx";
 import { Key } from "../../../components/Key/Key.tsx";
 import { useAppContext } from "../../../contexts/app/AppContext.tsx";
-import { _tempTodos } from "../../todo/constants.ts";
 import { TodoItem } from "../../todo/TodoItem/TodoItem.tsx";
 import { TodoList } from "../../todo/TodoList/TodoList.tsx";
+import { Todo } from "../service/types.ts";
 import { TodoListEmpty } from "../TodoListEmpty/TodoListEmpty.tsx";
-import { todoInitialState } from "./todoReducer/constants.ts";
-import { todoReducer } from "./todoReducer/todoReducer.ts";
+import * as actions from "./actions.ts";
+import { useTodoReducer } from "./todoReducer/useTodoReducer.ts";
 
 export const TodoContainer = () => {
   const { setGlobalKeysEnabled } = useAppContext();
-  const [state, dispatch] = useReducer(todoReducer, {
-    ...todoInitialState,
-    items: _tempTodos,
-    activeItem: _tempTodos[0],
-  });
+  const [state, dispatch] = useTodoReducer();
   const { items, activeItem, searchValue, mode } = state;
   const filteredItems = useMemo(
     () =>
@@ -28,7 +24,7 @@ export const TodoContainer = () => {
       ),
     [items, searchValue]
   );
-  const doneItems = useMemo(
+  const completedItems = useMemo(
     () => items.filter((todo) => todo.completed),
     [items]
   );
@@ -37,16 +33,20 @@ export const TodoContainer = () => {
   );
   const hasSearchValue = searchValue.length > 0;
 
-  const toggleTodo = (id: string) => {
-    dispatch({ type: "ITEM_TOGGLE", payload: { id } });
-  };
-
   const handleItemSelect = (index: number) => {
     dispatch({ type: "ITEM_SELECT", payload: { id: filteredItems[index].id } });
   };
 
-  const handleItemEdit = (id: string) => (newTitle: string) => {
-    dispatch({ type: "ITEM_EDIT", payload: { id, newTitle } });
+  const handleItemEdit = (item: Todo) => (newTitle: string) => {
+    const title = newTitle.trim();
+
+    if (title.length) {
+      dispatch(actions.updateTodo(item.id, { title }));
+    }
+  };
+
+  const handleItemToggle = (item: Todo) => {
+    dispatch(actions.updateTodo(item.id, { completed: !item.completed }));
   };
 
   const handleSearchChange = (value: string) => {
@@ -63,11 +63,11 @@ export const TodoContainer = () => {
     }
   };
 
-  const handleAddSubmit = (value: string) => {
+  const handleAddSubmit = async (value: string) => {
     const title = value.trim();
 
     if (title.length) {
-      dispatch({ type: "ITEM_ADD", payload: { title } });
+      dispatch(actions.addTodo(title, false));
     } else {
       dispatch({ type: "ITEM_ADD_CANCEL" });
     }
@@ -91,7 +91,7 @@ export const TodoContainer = () => {
     }
 
     if (input === " ") {
-      toggleTodo(activeItem.id);
+      handleItemToggle(activeItem);
     }
   });
 
@@ -99,9 +99,13 @@ export const TodoContainer = () => {
     setGlobalKeysEnabled(mode === "list");
   }, [mode, setGlobalKeysEnabled]);
 
+  useEffect(() => {
+    dispatch(actions.getTodos());
+  }, []);
+
   return (
     <Box flexDirection="column">
-      <Header title={`CLTodo (${doneItems.length}/${items.length})`}>
+      <Header title={`CLTodo (${completedItems.length}/${items.length})`}>
         {(mode === "search" || hasSearchValue) && (
           <Input
             symbol="?"
@@ -126,15 +130,15 @@ export const TodoContainer = () => {
         onSelect={handleItemSelect}
       >
         {items.length === 0 && <TodoListEmpty />}
-        {filteredItems.map(({ id, title, completed }) => (
+        {filteredItems.map((item) => (
           <TodoItem
-            key={id}
-            id={id}
-            title={title}
-            completed={completed}
-            active={id === activeItem.id}
-            isEditing={mode === "edit" && id === activeItem.id}
-            onEdit={handleItemEdit(id)}
+            key={item.id}
+            id={item.id}
+            title={item.title}
+            completed={item.completed}
+            active={item.id === activeItem.id}
+            isEditing={mode === "edit" && item.id === activeItem.id}
+            onEdit={handleItemEdit(item)}
           />
         ))}
       </TodoList>

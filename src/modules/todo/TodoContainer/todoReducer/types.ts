@@ -1,4 +1,5 @@
-import { Todo } from "../../types.ts";
+import React from "react";
+import { Todo } from "../../service/types.ts";
 
 export type TodoMode = "add" | "edit" | "search" | "list";
 
@@ -25,23 +26,22 @@ export type TodoAction =
   | {
       type: "ITEM_ADD";
       payload: {
-        title: string;
+        item: Todo;
       };
     }
   | {
       type: "ITEM_ADD_CANCEL";
     }
   | {
-      type: "ITEM_EDIT";
+      type: "ITEM_UPDATE";
       payload: {
-        id: string;
-        newTitle: string;
+        item: Todo;
       };
     }
   | {
-      type: "ITEM_TOGGLE";
+      type: "ITEMS_SET";
       payload: {
-        id: string;
+        items: Todo[];
       };
     }
   | {
@@ -56,3 +56,12 @@ export type TodoAction =
   | {
       type: "SEARCH_CLEAR";
     };
+
+export type TodoAsyncActionParams = {
+  dispatch: React.ActionDispatch<any>;
+  state: TodoState;
+};
+export type TodoAsyncAction = (params: TodoAsyncActionParams) => Promise<void>;
+export type TodoDispatch = (
+  action: TodoAction | TodoAsyncAction
+) => Promise<void>;

@@ -1,4 +1,3 @@
-import { nanoid } from "nanoid";
 import { TodoAction, TodoState } from "./types.ts";
 
 export const todoReducer = (
@@ -25,13 +24,8 @@ export const todoReducer = (
       };
     }
     case "ITEM_ADD": {
-      const { title } = action.payload;
-      const newItem = {
-        id: nanoid(),
-        title,
-        completed: false,
-      };
-      const updatedItems = [newItem, ...state.items];
+      const { item } = action.payload;
+      const updatedItems = [item, ...state.items];
       const activeItem = updatedItems[0];
       return {
         ...state,
@@ -47,29 +41,29 @@ export const todoReducer = (
         activeItem: state.items[0],
       };
     }
-    case "ITEM_EDIT": {
-      const { id, newTitle } = action.payload;
+    case "ITEM_UPDATE": {
+      const { item } = action.payload;
+      const items = state.items.map((todo) =>
+        todo.id === item.id ? item : todo
+      );
 
       return {
         ...state,
+        items,
+        activeItem: item,
         mode: "list",
-        items: state.items.map((todo) =>
-          todo.id === id ? { ...todo, title: newTitle } : todo
-        ),
       };
     }
 
-    case "ITEM_TOGGLE": {
-      const { id } = action.payload;
+    case "ITEMS_SET": {
+      const { items } = action.payload;
 
       return {
         ...state,
-        items: state.items.map((todo) =>
-          todo.id === id ? { ...todo, completed: !todo.completed } : todo
-        ),
+        items,
+        activeItem: items[0] || null,
       };
     }
-
     case "SEARCH_CHANGE": {
       const { value } = action.payload;
 
