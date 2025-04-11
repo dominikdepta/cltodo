@@ -5,8 +5,8 @@ import { InputProps } from "./types.ts";
 
 export const Input = ({ icon, ...inputProps }: InputProps) => {
   return (
-    <Box>
-      {icon && <Text>{icon} </Text>}
+    <Box flexDirection="row" gap={1}>
+      {icon && <Text>{icon}</Text>}
       <TextInput {...inputProps} />
     </Box>
   );
