@@ -1,6 +1,6 @@
 {
   "name": "cltodo",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "CLTodo (Command Line Todo)",
   "type": "module",
   "bin": {
