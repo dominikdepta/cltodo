@@ -56,10 +56,16 @@ export const TodoContainer = () => {
 
   const handleSearchSubmit = () => {
     setIsSearching(!isSearching);
+
+    if (!filteredTodos[0]) {
+      setSearchValue("");
+      return;
+    }
+
     setActiveItem(filteredTodos[0]);
   };
 
-  useInput((input, key) => {
+  useInput((input) => {
     if (isSearching || isEditing) {
       return;
     }
