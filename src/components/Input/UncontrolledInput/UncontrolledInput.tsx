@@ -8,7 +8,7 @@ export const UncontrolledInput = ({
   ...inputProps
 }: UncontrolledInputProps) => {
   return (
-    <BaseInput>
+    <BaseInput symbol={symbol}>
       <UncontrolledTextInput {...inputProps} />
     </BaseInput>
   );

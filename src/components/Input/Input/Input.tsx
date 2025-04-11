@@ -5,7 +5,7 @@ import { InputProps } from "./types.ts";
 
 export const Input = ({ symbol, ...inputProps }: InputProps) => {
   return (
-    <BaseInput>
+    <BaseInput symbol={symbol}>
       <TextInput {...inputProps} />
     </BaseInput>
   );
