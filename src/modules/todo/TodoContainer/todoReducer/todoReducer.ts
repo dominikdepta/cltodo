@@ -1,3 +1,4 @@
+import { nanoid } from "nanoid";
 import { TodoAction, TodoState } from "./types.ts";
 
 export const todoReducer = (
@@ -21,6 +22,29 @@ export const todoReducer = (
       return {
         ...state,
         activeItem,
+      };
+    }
+    case "ITEM_ADD": {
+      const { title } = action.payload;
+      const newItem = {
+        id: nanoid(),
+        title,
+        completed: false,
+      };
+      const updatedItems = [newItem, ...state.items];
+      const activeItem = updatedItems[0];
+      return {
+        ...state,
+        items: updatedItems,
+        activeItem,
+        mode: "list",
+      };
+    }
+    case "ITEM_ADD_CANCEL": {
+      return {
+        ...state,
+        mode: "list",
+        activeItem: state.items[0],
       };
     }
     case "ITEM_EDIT": {

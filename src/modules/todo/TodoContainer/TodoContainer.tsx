@@ -2,7 +2,8 @@ import { Box, useInput } from "ink";
 import React, { useEffect, useMemo, useReducer } from "react";
 import { Footer } from "../../../components/Footer/Footer.tsx";
 import { Header } from "../../../components/Header/Header.tsx";
-import { Input } from "../../../components/Input/Input.tsx";
+import { Input } from "../../../components/Input/Input/Input.tsx";
+import { UncontrolledInput } from "../../../components/Input/UncontrolledInput/UncontrolledInput.tsx";
 import { Key } from "../../../components/Key/Key.tsx";
 import { useAppContext } from "../../../contexts/app/AppContext.tsx";
 import { _tempTodos } from "../../todo/constants.ts";
@@ -33,6 +34,7 @@ export const TodoContainer = () => {
   const activeIndex = filteredItems.findIndex(
     (todo) => todo.id === activeItem.id
   );
+  const hasSearchValue = searchValue.length > 0;
 
   const toggleTodo = (id: string) => {
     dispatch({ type: "ITEM_TOGGLE", payload: { id } });
@@ -60,6 +62,16 @@ export const TodoContainer = () => {
     }
   };
 
+  const handleAddSubmit = (value: string) => {
+    const title = value.trim();
+
+    if (title.length) {
+      dispatch({ type: "ITEM_ADD", payload: { title } });
+    } else {
+      dispatch({ type: "ITEM_ADD_CANCEL" });
+    }
+  };
+
   useInput((input) => {
     if (mode !== "list") {
       return;
@@ -71,6 +83,10 @@ export const TodoContainer = () => {
 
     if (input === "e") {
       dispatch({ type: "MODE_SELECT", payload: { mode: "edit" } });
+    }
+
+    if (!hasSearchValue && input === "a") {
+      dispatch({ type: "MODE_SELECT", payload: { mode: "add" } });
     }
 
     if (input === " ") {
@@ -85,13 +101,20 @@ export const TodoContainer = () => {
   return (
     <Box flexDirection="column">
       <Header title={`CLTodo (${doneItems.length}/${items.length})`}>
-        {(mode === "search" || searchValue.length > 0) && (
+        {(mode === "search" || hasSearchValue) && (
           <Input
-            icon="🔎"
+            symbol="?"
             value={searchValue}
             focus={mode === "search"}
             onChange={handleSearchChange}
             onSubmit={handleSearchSubmit}
+          />
+        )}
+        {mode === "add" && (
+          <UncontrolledInput
+            symbol="+"
+            focus={mode === "add"}
+            onSubmit={handleAddSubmit}
           />
         )}
       </Header>
@@ -101,7 +124,7 @@ export const TodoContainer = () => {
         keyNavigation={mode === "list"}
         onSelect={handleItemSelect}
       >
-        {filteredItems.map(({ id, title, completed }, index) => (
+        {filteredItems.map(({ id, title, completed }) => (
           <TodoItem
             key={id}
             id={id}

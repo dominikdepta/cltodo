@@ -1,6 +1,6 @@
 import { Todo } from "../../types.ts";
 
-export type TodoMode = "edit" | "search" | "list";
+export type TodoMode = "add" | "edit" | "search" | "list";
 
 export interface TodoState {
   items: Todo[];
@@ -21,6 +21,15 @@ export type TodoAction =
       payload: {
         id: string;
       };
+    }
+  | {
+      type: "ITEM_ADD";
+      payload: {
+        title: string;
+      };
+    }
+  | {
+      type: "ITEM_ADD_CANCEL";
     }
   | {
       type: "ITEM_EDIT";
