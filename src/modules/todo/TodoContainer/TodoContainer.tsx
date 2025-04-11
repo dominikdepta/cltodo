@@ -9,6 +9,7 @@ import { useAppContext } from "../../../contexts/app/AppContext.tsx";
 import { _tempTodos } from "../../todo/constants.ts";
 import { TodoItem } from "../../todo/TodoItem/TodoItem.tsx";
 import { TodoList } from "../../todo/TodoList/TodoList.tsx";
+import { TodoListEmpty } from "../TodoListEmpty/TodoListEmpty.tsx";
 import { todoInitialState } from "./todoReducer/constants.ts";
 import { todoReducer } from "./todoReducer/todoReducer.ts";
 
@@ -124,6 +125,7 @@ export const TodoContainer = () => {
         keyNavigation={mode === "list"}
         onSelect={handleItemSelect}
       >
+        {items.length === 0 && <TodoListEmpty />}
         {filteredItems.map(({ id, title, completed }) => (
           <TodoItem
             key={id}
