@@ -1,9 +1,8 @@
 import { Box, Text } from "ink";
-import TextInput from "ink-text-input";
 import React from "react";
-import { InputProps } from "./types.ts";
+import { BaseInputProps } from "./types.ts";
 
-export const Input = ({ symbol, ...inputProps }: InputProps) => {
+export const BaseInput = ({ symbol, children }: BaseInputProps) => {
   return (
     <Box flexDirection="row">
       {symbol && (
@@ -11,7 +10,7 @@ export const Input = ({ symbol, ...inputProps }: InputProps) => {
           <Text backgroundColor="blue" color="black">{` ${symbol} `}</Text>
         </Box>
       )}
-      <TextInput {...inputProps} />
+      {children}
     </Box>
   );
 };
