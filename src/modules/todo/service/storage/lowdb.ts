@@ -1,13 +1,22 @@
+import fs from "node:fs";
+import path from "node:path";
 import { Low } from "lowdb";
 import { JSONFile } from "lowdb/node";
 import { Todo } from "../types.ts";
 import { BaseStorage } from "./base.ts";
 
+const DB_PATH = "./data/todos.json";
+
 export class LowDBStorage implements BaseStorage {
   private db: Low<{ todos: Todo[] }>;
 
   constructor() {
-    this.db = new Low(new JSONFile("data/todos.json"), { todos: [] });
+    const dir = path.dirname(DB_PATH);
+    if (!fs.existsSync(dir)) {
+      fs.mkdirSync(dir, { recursive: true });
+    }
+
+    this.db = new Low(new JSONFile(DB_PATH), { todos: [] });
   }
 
   async getAll() {
