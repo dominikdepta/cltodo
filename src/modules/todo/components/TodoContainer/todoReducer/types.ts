@@ -1,5 +1,5 @@
 import React from "react";
-import { Todo } from "../../service/types.ts";
+import { Todo } from "../../../types.ts";
 
 export type TodoMode = "add" | "edit" | "search" | "list";
 

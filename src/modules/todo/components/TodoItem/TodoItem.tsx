@@ -22,7 +22,11 @@ export const TodoItem = ({
           <UncontrolledTextInput initialValue={title} onSubmit={onEdit} />
         </Text>
       ) : (
-        <Text key={id} color={active ? "green" : "white"} strikethrough={completed}>
+        <Text
+          key={id}
+          color={active ? "green" : "white"}
+          strikethrough={completed}
+        >
           {title}
         </Text>
       )}

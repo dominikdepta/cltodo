@@ -10,13 +10,13 @@ const DB_PATH = "./data/todos.json";
 export class LowDBStorage implements BaseStorage {
   private db: Low<{ todos: Todo[] }>;
 
-  constructor() {
-    const dir = path.dirname(DB_PATH);
+  constructor(private dbPath: string = DB_PATH) {
+    const dir = path.dirname(this.dbPath);
     if (!fs.existsSync(dir)) {
       fs.mkdirSync(dir, { recursive: true });
     }
 
-    this.db = new Low(new JSONFile(DB_PATH), { todos: [] });
+    this.db = new Low(new JSONFile(this.dbPath), { todos: [] });
   }
 
   async getAll() {

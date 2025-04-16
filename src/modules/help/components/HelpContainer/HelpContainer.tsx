@@ -1,10 +1,10 @@
 import { Box } from "ink";
 import React from "react";
-import { Footer } from "../../../components/Footer/Footer.tsx";
-import { Header } from "../../../components/Header/Header.tsx";
+import { Footer } from "../../../../components/Footer/Footer.tsx";
+import { Header } from "../../../../components/Header/Header.tsx";
 import { HelpKey } from "../HelpKey/HelpKey.tsx";
 import { HelpTitle } from "../HelpTitle/HelpTitle.tsx";
-import { Key } from "../../../components/Key/Key.tsx";
+import { Key } from "../../../../components/Key/Key.tsx";
 
 export const HelpContainer = () => {
   return (

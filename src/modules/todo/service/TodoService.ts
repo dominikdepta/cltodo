@@ -1,11 +1,13 @@
 import { nanoid } from "nanoid";
-import { BaseStorage } from "./storage/base.ts";
-import { Todo } from "./types.ts";
+import { injectable, inject } from "inversify";
+import { BaseStorage } from "../storage/base.ts";
+import { Todo } from "../types.ts";
 
+@injectable()
 export class TodoService {
   #todoStorage: BaseStorage;
 
-  constructor(storage: BaseStorage) {
+  constructor(@inject("BaseStorage") storage: BaseStorage) {
     this.#todoStorage = storage;
   }
 

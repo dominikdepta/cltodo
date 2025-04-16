@@ -1,6 +1,6 @@
 import React from "react";
-import { ScrollBox } from "../../../components/ScrollBox/ScrollBox.tsx";
-import type { TodoListProps } from "./types.tsx";
+import { ScrollBox } from "../../../../components/ScrollBox/ScrollBox.tsx";
+import type { TodoListProps } from "./types.ts";
 
 export const TodoList = ({
   children,
